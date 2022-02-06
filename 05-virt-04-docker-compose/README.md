@@ -7,7 +7,7 @@
 - Скриншот страницы, как на слайде из презентации (слайд 37).
 
 <p align="center">
-  <img width="1200" height="600" src="./img/image.png">
+  <img src="./img/image.png">
 </p>
 
 ## Задача 2
@@ -18,7 +18,7 @@
 - Скриншот страницы свойств созданной ВМ, как на примере ниже:
 
 <p align="center">
-  <img width="1200" height="600" src="./img/cloud.png">
+  <img src="./img/cloud.png">
 </p>
 
 ## Задача 3
@@ -28,5 +28,6 @@
 Для получения зачета, вам необходимо предоставить:
 - Скриншот работающего веб-интерфейса Grafana с текущими метриками, как на примере ниже
 <p align="center">
-  <img width="1200" height="600" src="./img/grafana.png">
+  <img src="./img/grafana.png">
+  <img src="./img/grafana1.png">
 </p>
