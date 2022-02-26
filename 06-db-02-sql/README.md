@@ -7,6 +7,18 @@
 
 Приведите получившуюся команду или docker-compose манифест.
 
+```
+vagrant@vagrant:~$ sudo docker pull postgres:12
+vagrant@vagrant:~$ sudo docker volume create vol_prod
+vagrant@vagrant:~$ sudo docker volume create vol_test
+vagrant@vagrant:~$ sudo docker run --rm --name pgdocker -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgresql -d -p 5432:5432 -v $HOME/docker_volumes/vol_prod:/var/lib/postgresql/data postgres:12
+vagrant@vagrant:~$ sudo docker exec -it pgdocker psql -U postgresql
+psql (12.10 (Debian 12.10-1.pgdg110+1))
+Type "help" for help.
+
+postgresql=#
+```
+
 ## Задача 2
 
 В БД из задачи 1: 
@@ -32,6 +44,58 @@
 - описание таблиц (describe)
 - SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
 - список пользователей с правами над таблицами test_db
+
+```
+vagrant@vagrant:~$ sudo docker exec -it pgdocker psql -U postgresql
+psql (12.10 (Debian 12.10-1.pgdg110+1))
+Type "help" for help.
+
+postgresql=# CREATE DATABASE test_db;
+postgresql=# CREATE ROLE "test-admin-user" SUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
+postgresql=# exit
+vagrant@vagrant:~$ sudo docker exec -it pgdocker psql -U postgresql -d test_db
+psql (12.10 (Debian 12.10-1.pgdg110+1))
+Type "help" for help.
+test_db=# CREATE TABLE orders
+(id integer,
+name text,
+price integer,
+PRIMARY KEY (id));
+test_db=# CREATE TABLE clients
+(id integer PRIMARY KEY,
+lastname text,
+country text,
+booking integer,
+FOREIGN KEY (booking) REFERENCES orders (Id));
+test_db=# CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
+CREATE ROLE
+test_db=# GRANT ALL ON TABLE public.clients TO "test-simple-user";
+test_db=# GRANT ALL ON TABLE public.orders TO "test-simple-user";
+test_db=# \d+
+                        List of relations
+ Schema |  Name   | Type  |   Owner    |    Size    | Description
+--------+---------+-------+------------+------------+-------------
+ public | clients | table | postgresql | 8192 bytes |
+ public | orders  | table | postgresql | 8192 bytes |
+ test_db=# \du
+                                       List of roles
+    Role name     |                         Attributes                         | Member of
+------------------+------------------------------------------------------------+-----------
+ postgresql       | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ test-admin-user  | Superuser, No inheritance                                  | {}
+ test-simple-user | No inheritance                                             | {}
+test_db=# SELECT * FROM information_schema.role_table_grants WHERE grantee IN ('test-admin-user', 'test-simple-user');
+  grantor   |     grantee      | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
+------------+------------------+---------------+--------------+------------+----------------+--------------+----------------
+ postgresql | test-simple-user | test_db       | public       | orders     | INSERT         | NO           | NO
+ postgresql | test-simple-user | test_db       | public       | orders     | SELECT         | NO           | YES
+ postgresql | test-simple-user | test_db       | public       | orders     | UPDATE         | NO           | NO
+ postgresql | test-simple-user | test_db       | public       | orders     | DELETE         | NO           | NO
+ postgresql | test-simple-user | test_db       | public       | clients    | INSERT         | NO           | NO
+ postgresql | test-simple-user | test_db       | public       | clients    | SELECT         | NO           | YES
+ postgresql | test-simple-user | test_db       | public       | clients    | UPDATE         | NO           | NO
+ postgresql | test-simple-user | test_db       | public       | clients    | DELETE         | NO           | NO 
+```
 
 ## Задача 3
 
