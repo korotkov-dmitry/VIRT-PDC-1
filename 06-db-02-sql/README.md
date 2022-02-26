@@ -11,7 +11,7 @@
 vagrant@vagrant:~$ sudo docker pull postgres:12
 vagrant@vagrant:~$ sudo docker volume create vol_prod
 vagrant@vagrant:~$ sudo docker volume create vol_test
-vagrant@vagrant:~$ sudo docker run --rm --name pgdocker -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgresql -d -p 5432:5432 -v $HOME/docker_volumes/vol_prod:/var/lib/postgresql/data postgres:12
+vagrant@vagrant:~$ sudo docker run --rm --name pgdocker -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgresql -d -p 5432:5432 -v vol_prod:/var/lib/postgresql/data postgres:12
 vagrant@vagrant:~$ sudo docker exec -it pgdocker psql -U postgresql
 psql (12.10 (Debian 12.10-1.pgdg110+1))
 Type "help" for help.
@@ -69,8 +69,14 @@ booking integer,
 FOREIGN KEY (booking) REFERENCES orders (Id));
 test_db=# CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
 CREATE ROLE
-test_db=# GRANT ALL ON TABLE public.clients TO "test-simple-user";
-test_db=# GRANT ALL ON TABLE public.orders TO "test-simple-user";
+test_db=# GRANT SELECT ON TABLE public.clients TO "test-simple-user";
+test_db=# GRANT INSERT ON TABLE public.clients TO "test-simple-user";
+test_db=# GRANT UPDATE ON TABLE public.clients TO "test-simple-user";
+test_db=# GRANT DELETE ON TABLE public.clients TO "test-simple-user";
+test_db=# GRANT SELECT ON TABLE public.orders TO "test-simple-user";
+test_db=# GRANT INSERT ON TABLE public.orders TO "test-simple-user";
+test_db=# GRANT UPDATE ON TABLE public.orders TO "test-simple-user";
+test_db=# GRANT DELETE ON TABLE public.orders TO "test-simple-user";
 test_db=# \l
                                     List of databases
     Name    |   Owner    | Encoding |  Collate   |   Ctype    |     Access privileges
@@ -138,6 +144,20 @@ test_db=# \du
     - запросы 
     - результаты их выполнения.
 
+```
+test_db=# SELECT count (*) FROM orders;
+ count
+-------
+     5
+(1 row)
+
+test_db=# SELECT count (*) FROM clients;
+ count
+-------
+     5
+(1 row)
+```
+
 ## Задача 4
 
 Часть пользователей из таблицы clients решили оформить заказы из таблицы orders.
@@ -156,12 +176,38 @@ test_db=# \du
  
 Подсказк - используйте директиву `UPDATE`.
 
+```
+test_db=# UPDATE clients SET booking = 3 WHERE id = 1;
+test_db=# UPDATE clients SET booking = 4 WHERE id = 2;
+test_db=# UPDATE clients SET booking = 5 WHERE id = 3;
+test_db=# SELECT lastname ФИО, orders.name Заказ FROM clients INNER JOIN orders ON
+orders.id = clients.booking;
+         ФИО          |  Заказ
+----------------------+---------
+ Иванов Иван Иванович | Книга
+ Петров Петр Петрович | Монитор
+ Иоганн Себастьян Бах | Гитара
+```
+
 ## Задача 5
 
 Получите полную информацию по выполнению запроса выдачи всех пользователей из задачи 4 
 (используя директиву EXPLAIN).
 
 Приведите получившийся результат и объясните что значат полученные значения.
+
+```
+test_db=# EXPLAIN SELECT lastname ФИО, orders.name Заказ FROM clients INNER JOIN or
+ders ON orders.id = clients.booking;
+                              QUERY PLAN
+-----------------------------------------------------------------------
+ Hash Join  (cost=37.00..57.24 rows=810 width=64)
+   Hash Cond: (clients.booking = orders.id)
+   ->  Seq Scan on clients  (cost=0.00..18.10 rows=810 width=36)
+   ->  Hash  (cost=22.00..22.00 rows=1200 width=36)
+         ->  Seq Scan on orders  (cost=0.00..22.00 rows=1200 width=36)
+```
+Результат показывает время выполнения всего запроса. Время на создание связи и время сбора запроса в таблицу для вывода. 
 
 ## Задача 6
 
@@ -175,4 +221,63 @@ test_db=# \du
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
 
----
+```
+vagrant@vagrant:~$ sudo docker exec -t pgdocker pg_dump -U postgresql test_db -f /var/lib/postgresql/data/dump_test.sql
+vagrant@vagrant:~$ sudo docker stop pgdocker
+vagrant@vagrant:~$ sudo docker run --rm --name pgdocker2 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgresql -d -v vol_test:/var/lib/postgresql postgres:12
+vagrant@vagrant:~$ sudo docker exec -it pgdocker2 psql -U postgresql
+postgresql=# CREATE DATABASE test_db;
+postgresql=# CREATE ROLE "test-admin-user" SUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
+postgresql=# CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN;
+postgresql=# \q
+vagrant@vagrant:~$ sudo docker exec -it pgdocker2 psql -U postgresql -d test_db -f /var/lib/postgresql/dump_test.sql
+SET
+SET
+SET
+SET
+SET
+ set_config
+------------
+
+(1 row)
+
+SET
+SET
+SET
+SET
+SET
+SET
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+ALTER TABLE
+COPY 5
+COPY 5
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+GRANT
+GRANT
+vagrant@vagrant:~$ sudo docker exec -it pgdocker2 psql -U postgresql -d test_db
+psql (12.10 (Debian 12.10-1.pgdg110+1))
+Type "help" for help.
+
+test_db=# \du
+                                       List of roles
+    Role name     |                         Attributes                         | Me
+mber of
+------------------+------------------------------------------------------------+---
+--------
+ postgresql       | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ test-admin-user  | Superuser, No inheritance                                  | {}
+ test-simple-user | No inheritance                                             | {}
+
+test_db=# SELECT lastname ФИО, orders.name Заказ FROM clients INNER JOIN orders ON
+orders.id = clients.booking;
+         ФИО          |  Заказ
+----------------------+---------
+ Иванов Иван Иванович | Книга
+ Петров Петр Петрович | Монитор
+ Иоганн Себастьян Бах | Гитара
+(3 rows)
+```
