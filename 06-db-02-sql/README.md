@@ -71,20 +71,24 @@ test_db=# CREATE ROLE "test-simple-user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOI
 CREATE ROLE
 test_db=# GRANT ALL ON TABLE public.clients TO "test-simple-user";
 test_db=# GRANT ALL ON TABLE public.orders TO "test-simple-user";
+test_db=# \l
+                                    List of databases
+    Name    |   Owner    | Encoding |  Collate   |   Ctype    |     Access privileges
+------------+------------+----------+------------+------------+---------------------------
+ postgres   | postgresql | UTF8     | en_US.utf8 | en_US.utf8 |
+ postgresql | postgresql | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0  | postgresql | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgresql            +
+            |            |          |            |            | postgresql=CTc/postgresql
+ template1  | postgresql | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgresql            +
+            |            |          |            |            | postgresql=CTc/postgresql
+ test_db    | postgresql | UTF8     | en_US.utf8 | en_US.utf8 |
 test_db=# \d+
                         List of relations
  Schema |  Name   | Type  |   Owner    |    Size    | Description
 --------+---------+-------+------------+------------+-------------
  public | clients | table | postgresql | 8192 bytes |
  public | orders  | table | postgresql | 8192 bytes |
- test_db=# \du
-                                       List of roles
-    Role name     |                         Attributes                         | Member of
-------------------+------------------------------------------------------------+-----------
- postgresql       | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
- test-admin-user  | Superuser, No inheritance                                  | {}
- test-simple-user | No inheritance                                             | {}
-test_db=# SELECT * FROM information_schema.role_table_grants WHERE grantee IN ('test-admin-user', 'test-simple-user');
+test_db=# SELECT * FROM information_schema.role_table_grants WHERE grantee IN ('test-simple-user');
   grantor   |     grantee      | table_catalog | table_schema | table_name | privilege_type | is_grantable | with_hierarchy
 ------------+------------------+---------------+--------------+------------+----------------+--------------+----------------
  postgresql | test-simple-user | test_db       | public       | orders     | INSERT         | NO           | NO
@@ -95,6 +99,13 @@ test_db=# SELECT * FROM information_schema.role_table_grants WHERE grantee IN ('
  postgresql | test-simple-user | test_db       | public       | clients    | SELECT         | NO           | YES
  postgresql | test-simple-user | test_db       | public       | clients    | UPDATE         | NO           | NO
  postgresql | test-simple-user | test_db       | public       | clients    | DELETE         | NO           | NO 
+test_db=# \du
+                                       List of roles
+    Role name     |                         Attributes                         | Member of
+------------------+------------------------------------------------------------+-----------
+ postgresql       | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ test-admin-user  | Superuser, No inheritance                                  | {}
+ test-simple-user | No inheritance                                             | {}
 ```
 
 ## Задача 3
