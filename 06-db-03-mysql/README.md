@@ -19,6 +19,41 @@
 
 В следующих заданиях мы будем продолжать работу с данным контейнером.
 
+Решение:
+```
+vagrant@vagrant:~$ docker pull mysql:8
+8: Pulling from library/mysql
+vagrant@vagrant:~$ docker volume create vol_mysql
+vol_mysql
+vagrant@vagrant:~$ sudo wget https://github.com/.../test_dump.sql
+vagrant@vagrant:~$ docker run --rm --name mysql-docker -e MYSQL_ROOT_PASSWORD=mysql -d -p 3306:3306 -v vol_mysql:/etc/mysql/ mysql:8
+ea7905e5834b6d3c536d1c0415b5f5dd834cedf636c37c2a298aa5e2a187bc6e
+vagrant@vagrant:~$ sudo docker exec -it mysql-docker mysql -p"mysql"
+mysql> \s;
+--------------
+mysql  Ver 8.0.28 for Linux on x86_64 (MySQL Community Server - GPL)
+
+Connection id:          31
+Current database:       test_db
+Current user:           root@localhost
+SSL:                    Not in use
+Current pager:          stdout
+Using outfile:          ''
+Using delimiter:        ;
+Server version:         8.0.28 MySQL Community Server - GPL
+Protocol version:       10
+Connection:             Localhost via UNIX socket
+Server characterset:    utf8mb4
+Db     characterset:    utf8mb4
+Client characterset:    latin1
+Conn.  characterset:    latin1
+UNIX socket:            /var/run/mysqld/mysqld.sock
+Binary data as:         Hexadecimal
+Uptime:                 57 min 14 sec
+
+Threads: 2  Questions: 183  Slow queries: 0  Opens: 167  Flush tables: 3  Open tables: 85  Queries per second avg: 0.053
+--------------
+```
 ## Задача 2
 
 Создайте пользователя test в БД c паролем test-pass, используя:
