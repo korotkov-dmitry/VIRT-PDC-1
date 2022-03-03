@@ -15,6 +15,60 @@
 - вывода описания содержимого таблиц
 - выхода из psql
 
+Решение:
+```
+vagrant@vagrant:~$ docker pull postgres:13
+13: Pulling from library/postgres
+...
+Digest: sha256:5bc010bbb524bef645ab7930e0a198625d1acfc8bdb69c460b030840b0911e3f
+Status: Downloaded newer image for postgres:13
+docker.io/library/postgres:13
+vagrant@vagrant:~$ docker volume create vol_psql
+vol_psql
+vagrant@vagrant:~$ sudo docker run --rm --name pgdocker -e POSTGRES_PASSWORD
+=postgres -e POSTGRES_USER=postgresql -d -p 5432:5432 -v vol_psql:/var/lib/p
+ostgresql/data postgres:13
+b43032d37fd0f6dadc67e90d440d700036360d0191419c2d48d3e6c4aac4f05e
+vagrant@vagrant:~$ sudo docker exec -it pgdocker psql -U postgresql
+psql (13.6 (Debian 13.6-1.pgdg110+1))
+Type "help" for help.
+
+postgresql=# \l
+                                    List of databases
+    Name    |   Owner    | Encoding |  Collate   |   Ctype    |     Access privileges
+------------+------------+----------+------------+------------+---------------------------
+ postgres   | postgresql | UTF8     | en_US.utf8 | en_US.utf8 |
+ postgresql | postgresql | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0  | postgresql | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgresql            +
+            |            |          |            |            | postgresql=CTc/postgresql
+ template1  | postgresql | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgresql            +
+            |            |          |            |            | postgresql=CTc/postgresql
+(4 rows)
+
+postgresql=# \c postgres
+You are now connected to database "postgres" as user "postgresql".
+
+postgres=# \dtS
+ pg_catalog | pg_aggregate            | table | postgresql
+ pg_catalog | pg_am                   | table | postgresql
+ pg_catalog | pg_amop                 | table | postgresql
+ pg_catalog | pg_amproc               | table | postgresql
+ ...
+
+postgres=# \dS+ pg_type
+ oid            | oid          |           | not null |         | plain    |              |
+ typname        | name         |           | not null |         | plain    |              |
+ typnamespace   | oid          |           | not null |         | plain    |              |
+ typowner       | oid          |           | not null |         | plain    |              |
+ typlen         | smallint     |           | not null |         | plain    |              |
+ typbyval       | boolean      |           | not null |         | plain    |              |
+ typtype        | "char"       |           | not null |         | plain    |              |
+ typcategory    | "char"       |           | not null |         | plain    |              |
+...
+
+postgres=# \q
+```
+
 ## Задача 2
 
 Используя `psql` создайте БД `test_database`.
