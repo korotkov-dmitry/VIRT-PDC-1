@@ -177,6 +177,8 @@ INSERT 0 8
 ```
 vagrant@vagrant:~$ docker exec -i pgdocker /bin/bash -c "PGPASSWORD=postgres pg_dump --username postgresql test_database" > test_dump_ubd.sql
 ```
+[бэкап БД](https://github.com/korotkov-dmitry/VIRT-PDC-1/edit/main/06-db-04-postgresql/test_data)
+
 Уникальность можно обеспечить добавив индекс или первичный ключ.
 ```
 CREATE INDEX ON orders ((lower(title)));
