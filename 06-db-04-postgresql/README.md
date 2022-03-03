@@ -86,6 +86,63 @@ postgres=# \q
 
 **Приведите в ответе** команду, которую вы использовали для вычисления и полученный результат.
 
+Решение:
+```
+postgresql=# CREATE DATABASE test_database;
+CREATE DATABASE
+postgresql=# \q
+vagrant@vagrant:~$ docker exec -i pgdocker /bin/bash -c "PGPASSWORD=postgres psql --username postgresql test_database" < test_dump.sql.4
+SET
+SET
+SET
+SET
+SET
+ set_config
+------------
+
+(1 row)
+
+SET
+SET
+SET
+SET
+SET
+SET
+CREATE TABLE
+ERROR:  role "postgres" does not exist
+CREATE SEQUENCE
+ERROR:  role "postgres" does not exist
+ALTER SEQUENCE
+ALTER TABLE
+COPY 8
+ setval
+--------
+      8
+(1 row)
+
+ALTER TABLE
+vagrant@vagrant:~$ sudo docker exec -it pgdocker psql -U postgresql
+postgresql=# \c test_database
+You are now connected to database "test_database" as user "postgresql".
+test_database=# \dt
+          List of relations
+ Schema |  Name  | Type  |   Owner
+--------+--------+-------+------------
+ public | orders | table | postgresql
+(1 row)
+test_database=# ANALYZE VERBOSE public.orders;
+INFO:  analyzing "public.orders"
+INFO:  "orders": scanned 1 of 1 pages, containing 8 live rows and 0 dead rows; 8 rows in sample, 8 estimated total rows
+ANALYZE
+test_database=# SELECT avg_width FROM pg_stats WHERE tablename='orders';
+ avg_width
+-----------
+         4
+        16
+         4
+(3 rows)
+```
+
 ## Задача 3
 
 Архитектор и администратор БД выяснили, что ваша таблица orders разрослась до невиданных размеров и
@@ -96,8 +153,31 @@ postgres=# \q
 
 Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
 
+Решение:
+```
+test_database=# alter table orders rename to orders_simple;
+ALTER TABLE
+test_database=# create table orders (id integer, title varchar(80), price integer) partition by range(price);
+CREATE TABLE
+test_database=# create table orders_less499 partition of orders for values from (0) to (499);
+CREATE TABLE
+test_database=# create table orders_more499 partition of orders for values from (499) to (999999999);
+CREATE TABLE
+test_database=# insert into orders (id, title, price) select * from orders_simple;
+INSERT 0 8
+```
+
 ## Задача 4
 
 Используя утилиту `pg_dump` создайте бекап БД `test_database`.
 
 Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?
+
+Решение:
+```
+vagrant@vagrant:~$ docker exec -i pgdocker /bin/bash -c "PGPASSWORD=postgres pg_dump --username postgresql test_database" > test_dump_ubd.sql
+```
+Уникальность можно обеспечить добавив индекс или первичный ключ.
+```
+CREATE INDEX ON orders ((lower(title)));
+```
