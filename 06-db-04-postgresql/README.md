@@ -166,6 +166,8 @@ CREATE TABLE
 test_database=# insert into orders (id, title, price) select * from orders_simple;
 INSERT 0 8
 ```
+Дополнение:
+Избежать ручного разбиения можно было при проектировании таблиц, т.е. использовать секционирование сразу.
 
 ## Задача 4
 
@@ -183,3 +185,5 @@ vagrant@vagrant:~$ docker exec -i pgdocker /bin/bash -c "PGPASSWORD=postgres pg_
 ```
 CREATE INDEX ON orders ((lower(title)));
 ```
+Дополнение:
+Стандарту SQL соответствует использование UNIQUE - ограничение уникальности данных, содержащихся в колонке или группе колонок.
