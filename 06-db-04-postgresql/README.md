@@ -167,6 +167,7 @@ test_database=# insert into orders (id, title, price) select * from orders_simpl
 INSERT 0 8
 ```
 Дополнение:
+
 Избежать ручного разбиения можно было при проектировании таблиц, т.е. использовать секционирование сразу.
 
 ## Задача 4
@@ -186,6 +187,7 @@ vagrant@vagrant:~$ docker exec -i pgdocker /bin/bash -c "PGPASSWORD=postgres pg_
 CREATE INDEX ON orders ((lower(title)));
 ```
 Дополнение:
+
 Для таблицы orders после разбиения не отработает, т.к. эта таблица `partitioned`. Для "обычной" отработает:
 ```
 test_database=# CREATE INDEX ON orders_simple ((lower(title)));
