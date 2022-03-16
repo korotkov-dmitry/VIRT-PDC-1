@@ -120,6 +120,122 @@ Enter host password for user 'elastic':
 При проектировании кластера elasticsearch нужно корректно рассчитывать количество реплик и шард,
 иначе возможна потеря данных индексов, вплоть до полной, при деградации системы.
 
+Решение:
+
+Добавление индексов:
+```
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X PUT https://localhost:9200/ind-1 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 0 , "number_of_shards": 1}}'
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X PUT https://localhost:9200/ind-2 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 1 , "number_of_shards": 2}}'
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X PUT https://localhost:9200/ind-3 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 2 , "number_of_shards": 4}}'
+```
+Список индексов:
+```
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cat/indices?v
+health status index uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   ind-1 ruX8cemnTL-iTQmv7nSv8w   1   0          0            0       225b           225b
+yellow open   ind-3 CA9xkvpPQdGih709Mf9nMA   4   2          0            0       225b           225b
+yellow open   ind-2 3oIVs7U4Ske1BvuNs3VEsg   2   1          0            0       450b           450b
+```
+Статусы индексов:
+```
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cluster/health/ind-1?pretty
+{
+  "cluster_name" : "netology_test",
+  "status" : "green",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 1,
+  "active_shards" : 1,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 0,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 100.0
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cluster/health/ind-2?pretty
+{
+  "cluster_name" : "netology_test",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 2,
+  "active_shards" : 2,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 2,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 47.368421052631575
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cluster/health/ind-3?pretty
+{
+  "cluster_name" : "netology_test",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 4,
+  "active_shards" : 4,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 8,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 47.368421052631575
+}  
+```
+Состояние кластера:
+```
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cluster/health/?pretty=true
+{
+  "cluster_name" : "netology_test",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 9,
+  "active_shards" : 9,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 10,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 47.368421052631575
+```
+Удаление индексов:
+```
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X DELETE https://localhost:9200/ind-1?pretty
+{
+  "acknowledged" : true
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X DELETE https://localhost:9200/ind-2?pretty
+{
+  "acknowledged" : true
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X DELETE https://localhost:9200/ind-3?pretty
+{
+  "acknowledged" : true
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cat/indices?v
+health status index uuid pri rep docs.count docs.deleted store.size pri.store.size
+```
+
+yellow для индекса означает что указаны реплики.
+
+yellow для кластера означает что основной шард выделен, а реплики нет.
+
+
 ## Задача 3
 
 В данном задании вы научитесь:
