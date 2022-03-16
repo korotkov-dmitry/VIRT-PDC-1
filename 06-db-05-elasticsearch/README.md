@@ -266,4 +266,59 @@ yellow для кластера означает что основной шард
 Подсказки:
 - возможно вам понадобится доработать `elasticsearch.yml` в части директивы `path.repo` и перезапустить `elasticsearch`
 
----
+Решение:
+```
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X POST https://localhost:9200/_snapshot/netology_backup?pretty -H 'Content-Type: application/json' -d'{"type": "fs", "settings": { "location":"elasticsearch-8.1.0/snapshots" }}'
+{
+  "acknowledged" : true
+}
+[elasticsearch@4c004618605c /]$  curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_snapshot/netology_backup?pretty
+{
+  "netology_backup" : {
+    "type" : "fs",
+    "settings" : {
+      "location" : "elasticsearch-8.1.0/snapshots"
+    }
+  }
+}
+
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X PUT https://localhost:9200/test -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 0,  "number_of_shards": 1 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"test"}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cat/indices?v
+health status index uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test  _eiIrpYEQm-BD6rpd6m2vg   1   0          0            0       225b           225b
+
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X PUT https://localhost:9200/_snapshot/netology_backup/elasticsearch?wait_for_completion=true
+{"snapshot":{"snapshot":"elasticsearch","uuid":"ozB5jwy6S4-fY_r9QYfVcg","repository":"netology_backup","version_id":8010099,"version":"8.1.0","indices":[".geoip_databases",".security-7","test"],"data_streams":[],"include_global_state":true,"state":"SUCCESS","start_time":"2022-03-16T13:52:14.448Z","start_time_in_millis":1647438734448,"end_time":"2022-03-16T13:52:16.264Z","end_time_in_millis":1647438736264,"duration_in_millis":1816,"failures":[],"shards":{"total":3,"failed":0,"successful":3},"feature_states":[{"feature_name":"geoip","indices":[".geoip_databases"]},{"feature_name":"security","indices":[".security-7"]}]}}
+
+[elasticsearch@4c004618605c /]$ ls -la /elasticsearch-8.1.0/snapshots/elasticsearch-8.1.0/snapshots
+total 44
+drwxr-xr-x 3 elasticsearch elasticsearch  4096 Mar 16 13:52 .
+drwxr-xr-x 3 elasticsearch elasticsearch  4096 Mar 16 13:39 ..
+-rw-r--r-- 1 elasticsearch elasticsearch  1098 Mar 16 13:52 index-0
+-rw-r--r-- 1 elasticsearch elasticsearch     8 Mar 16 13:52 index.latest
+drwxr-xr-x 5 elasticsearch elasticsearch  4096 Mar 16 13:52 indices
+-rw-r--r-- 1 elasticsearch elasticsearch 18406 Mar 16 13:52 meta-ozB5jwy6S4-fY_r9QYfVcg.dat
+-rw-r--r-- 1 elasticsearch elasticsearch   391 Mar 16 13:52 snap-ozB5jwy6S4-fY_r9QYfVcg.dat
+
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X DELETE https://localhost:9200/test?pretty
+{
+  "acknowledged" : true
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cat/indices?v
+health status index uuid pri rep docs.count docs.deleted store.size pri.store.size
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X PUT https://localhost:9200/test-2 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 0,  "number_of_shards": 1 }}'
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_cat/indices?v
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 bwNiLZVgQF29Lkc12M9bew   1   0          0            0       225b           225b
+
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X POST https://localhost:9200/_snapshot/netology_backup/elasticsearch/_restore?pretty -H 'Content-Type: application/json' -d'{"include_global_state":true}'
+{
+  "accepted" : true
+}
+[elasticsearch@4c004618605c /]$ curl -k -u elastic:QkJ5Y5oqIWBG=WfcOMd3 -X GET https://localhost:9200/_
+cat/indices?v
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 bwNiLZVgQF29Lkc12M9bew   1   0          0            0       225b           225b
+green  open   test   8ZqIlUsNRLW7Whvkcblo-Q   1   0          0            0       225b           225b
+```
