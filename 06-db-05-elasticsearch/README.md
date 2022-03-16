@@ -67,7 +67,7 @@ CMD ["/usr/sbin/init"]
 CMD ["/elasticsearch-8.1.0/bin/elasticsearch"]
 ```
 
-
+[centos_es](https://hub.docker.com/r/korotkovdmitry/centos_es)
 
 ```
 vagrant@vagrant:~$ curl --cacert http_ca.crt -u elastic https://localhost:9200
