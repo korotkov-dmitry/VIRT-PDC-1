@@ -87,10 +87,6 @@ InterfaceError: (InterfaceError) 2013: Lost connection to MySQL server during qu
 Как бы вы решили данную проблему?
 
 Решение:
-<<<<<<< HEAD
-oom-killer прекращает процесс т.к. не достаточно памяти.
-=======
 
 `oom-killer` прекращает процесс т.к. не достаточно памяти.
->>>>>>> 9cb16e35f83c2ce54c7e72f3c9fcf48a067a7661
 Необходимо проверить настройки управления памятью ядра: `vm.overcommit_memory`, `overcommit_ratio` и возможностью подкачки `/proc/sys/vm/swappiness`. И, при необходимости, их настроить под конкретную БД.
