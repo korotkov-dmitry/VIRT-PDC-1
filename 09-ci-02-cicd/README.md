@@ -36,6 +36,14 @@
 <p align="center">
   <img src="./img/fail_py_good.png">
 </p>
+
+'''
+
+vagrant@vagrant:~/$ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:8.7-community
+...
+vagrant@vagrant:~/sonar-test$ sonar-scanner -Dsonar.projectKey=netology-homework -Dsonar.coverage.exclusions=fail.py   -Dsonar.host.url=http://localhost:9000   -Dsonar.login=admin -Dsonar.password=adminadmin
+'''
+
 ## Знакомство с Nexus
 
 ### Подготовка к выполнению
