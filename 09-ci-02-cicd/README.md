@@ -37,14 +37,57 @@
   <img src="./img/fail_py_good.png">
 </p>
 
-[fail.py](./scr/fail.py)
+[fail.py](./src/fail.py)
 
-'''
-
+```
 vagrant@vagrant:~$ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:8.7-community
 ...
+vagrant@vagrant:~$ cd /opt
+vagrant@vagrant:/opt$ sudo mkdir sonarscanner
+vagrant@vagrant:~$ cd sonarscanner
+vagrant@vagrant:/opt/sonarscanner$ sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+vagrant@vagrant:/opt/sonarscanner$ sudo unzip sonar-scanner-cli-4.7.0.2747-linux.zip
+vagrant@vagrant:/opt/sonarscanner$ sudo cat sonar-scanner-4.7.0.2747-linux/conf/sonar-scanner.properties
+#Configure here general information about the environment, such as SonarQube server connection details for example
+#No information about specific project should appear here
+
+#----- Default SonarQube server
+sonar.host.url=http://localhost:9000
+
+#----- Default source code encoding
+sonar.sourceEncoding=UTF-8
+vagrant@vagrant:/opt/sonarscanner$ sudo chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
+vagrant@vagrant:/opt/sonarscanner$ sudo ln -s /opt/sonarscanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner
+vagrant@vagrant:/opt/sonarscanner$ sonar-scanner -v
+INFO: Scanner configuration file: /opt/sonarscanner/sonar-scanner-4.7.0.2747-linux/conf/sonar-scanner.properties
+INFO: Project root configuration file: NONE
+INFO: SonarScanner 4.7.0.2747
+INFO: Java 11.0.14.1 Eclipse Adoptium (64-bit)
+INFO: Linux 5.4.0-80-generic amd64
 vagrant@vagrant:~/sonar-test$ sonar-scanner -Dsonar.projectKey=netology-homework -Dsonar.coverage.exclusions=fail.py -Dsonar.host.url=http://localhost:9000   -Dsonar.login=admin -Dsonar.password=adminadmin
-'''
+INFO: Project root configuration file: NONE
+INFO: SonarScanner 4.7.0.2747
+INFO: Java 11.0.14.1 Eclipse Adoptium (64-bit)
+INFO: Linux 5.4.0-80-generic amd64
+INFO: User cache: /home/vagrant/.sonar/cache
+INFO: Scanner configuration file: /opt/sonarscanner/sonar-scanner-4.7.0.2747-linux/conf/sonar-scanner.properties
+...
+INFO: Base dir: /home/vagrant/sonar-test
+INFO: Working dir: /home/vagrant/sonar-test/.scannerwork
+INFO: Load project settings for component key: 'netology-homework'
+...
+INFO: Indexing files...
+INFO: Project configuration:
+INFO:   Excluded sources for coverage: fail.py
+...
+INFO: Analysis total time: 26.540 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 29.562s
+INFO: Final Memory: 7M/27M
+INFO: ------------------------------------------------------------------------
+```
 
 ## Знакомство с Nexus
 
