@@ -18,7 +18,7 @@
 2. Скачиваем пакет sonar-scanner, который нам предлагает скачать сам sonarqube
 3. Делаем так, чтобы binary был доступен через вызов в shell (или меняем переменную PATH или любой другой удобный вам способ)
 4. Проверяем `sonar-scanner --version`
-5. Запускаем анализатор против кода из директории [example](./example) с дополнительным ключом `-Dsonar.coverage.exclusions=fail.py`
+5. Запускаем анализатор против кода из директории [example](https://github.com/netology-code/mnt-homeworks/tree/master/09-ci-02-cicd/example) с дополнительным ключом `-Dsonar.coverage.exclusions=fail.py`
 6. Смотрим результат в интерфейсе
 7. Исправляем ошибки, которые он выявил(включая warnings)
 8. Запускаем анализатор повторно - проверяем, что QG пройдены успешно
@@ -37,11 +37,12 @@
   <img src="./img/fail_py_good.png">
 </p>
 
+[fail.py](./scr/fail.py)
 '''
 
-vagrant@vagrant:~/$ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:8.7-community
+vagrant@vagrant:~$ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:8.7-community
 ...
-vagrant@vagrant:~/sonar-test$ sonar-scanner -Dsonar.projectKey=netology-homework -Dsonar.coverage.exclusions=fail.py   -Dsonar.host.url=http://localhost:9000   -Dsonar.login=admin -Dsonar.password=adminadmin
+vagrant@vagrant:~/sonar-test$ sonar-scanner -Dsonar.projectKey=netology-homework -Dsonar.coverage.exclusions=fail.py -Dsonar.host.url=http://localhost:9000   -Dsonar.login=admin -Dsonar.password=adminadmin
 '''
 
 ## Знакомство с Nexus
