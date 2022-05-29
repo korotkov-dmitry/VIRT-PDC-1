@@ -29,6 +29,13 @@
   <img src="./img/fail_py_bug.png">
 </p>
 
+<p align="center">
+  <img src="./img/fail_py_bug_1.png">
+</p>
+
+<p align="center">
+  <img src="./img/fail_py_good.png">
+</p>
 ## Знакомство с Nexus
 
 ### Подготовка к выполнению
