@@ -114,6 +114,15 @@ INFO: ------------------------------------------------------------------------
 
 #### Решение
 
+<p align="center">
+  <img src="./img/maven.png">
+</p>
+
+<p align="center">
+  <img src="./img/maven_1.png">
+</p>
+
+[maven-metadata.xml](./src/maven-metadata.xml)
 
 ### Знакомство с Maven
 
