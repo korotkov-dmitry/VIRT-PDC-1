@@ -142,4 +142,33 @@ INFO: ------------------------------------------------------------------------
 
 #### Решение
 
+```
+vagrant@vagrant:~$ mvn -v
+Apache Maven 3.8.5 (3599d3414f046de2324203b78ddcf9b5e4388aa0)
+Maven home: /opt/apache-maven-3.8.5
+Java version: 11.0.15, vendor: Private Build, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "5.4.0-80-generic", arch: "amd64", family: "unix"
+vagrant@vagrant:~/maven$ ls
+pom.xml
+vagrant@vagrant:~/maven$ mvn package
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  39.393 s
+[INFO] Finished at: 2022-05-31T08:15:24Z
+[INFO] ------------------------------------------------------------------------
+vagrant@vagrant:~/maven$ ls ~/.m2/repository/netology/java/8_282 -l
+total 36
+-rw-rw-r-- 1 vagrant vagrant 7925 May 31 08:14 java-8_282-distrib.tar.gz
+-rw-rw-r-- 1 vagrant vagrant  634 May 31 08:14 java-8_282-distrib.tar.gz.lastUpdated
+-rw-rw-r-- 1 vagrant vagrant 7925 May 31 08:14 java-8_282-distrib.tar.gz.sha1
+-rw-rw-r-- 1 vagrant vagrant  350 May 31 07:59 java-8_282.pom
+-rw-rw-r-- 1 vagrant vagrant  326 May 31 07:59 java-8_282.pom.lastUpdated
+-rw-rw-r-- 1 vagrant vagrant   40 May 31 07:59 java-8_282.pom.sha1
+-rw-rw-r-- 1 vagrant vagrant  199 May 31 08:14 _remote.repositories
+```
+
+[pom.xml](./src/pom.xml)
 
