@@ -53,8 +53,8 @@
   <img src="./img/TC_5.png">
 </p>
 
-[docker-compose.yml](./src)
+[docker-compose.yml](./src/docker-compose.yml)
 
-[Fork example-teamcity](./src/example-teamcity)
+[Fork example-teamcity](https://github.com/korotkov-dmitry/example-teamcity)
 
 [Artifacts](./src/Example_Teamcity_Build_artifacts)
