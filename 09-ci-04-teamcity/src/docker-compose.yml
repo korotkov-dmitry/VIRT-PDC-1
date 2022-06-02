@@ -18,9 +18,9 @@ services:
     volumes:
       - type: volume
         source: logs
-        target: /data/teamcity_agent/conf
+        target: /data/teamcity_agent/conf 
     environment:
-      SERVER_URL: "http://teamcity:8111"
+      SERVER_URL: "http://localhost:8111"
 
 volumes:
     data:
