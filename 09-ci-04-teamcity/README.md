@@ -26,3 +26,29 @@
 14. Проведите повторную сборку мастера, убедитесь, что сбора прошла успешно и артефакты собраны
 15. Проверьте, что конфигурация в репозитории содержит все настройки конфигурации из teamcity
 16. В ответ предоставьте ссылку на репозиторий
+
+## Решение
+
+<p align="center">
+  <img src="./img/TC.png">
+</p>
+
+<p align="center">
+  <img src="./img/TC_1.png">
+</p>
+
+<p align="center">
+  <img src="./img/TC_2.png">
+</p>
+
+<p align="center">
+  <img src="./img/TC_3.png">
+</p>
+
+<p align="center">
+  <img src="./img/TC_4.png">
+</p>
+
+<p align="center">
+  <img src="./img/TC_5.png">
+</p>
