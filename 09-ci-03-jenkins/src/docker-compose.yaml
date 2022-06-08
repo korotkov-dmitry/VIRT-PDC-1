@@ -1,0 +1,23 @@
+# docker-compose.yaml
+version: '3.8'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - /home/vagrant/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+  agent:
+    image: jenkins/ssh-agent:jdk11
+    privileged: true
+    user: root
+    container_name: agent
+    expose:
+      - 22
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDekGsPaOYIg6TNVYfPr0TsG+qtX0HG+5lHpCpCZMaB6BIh6wlX5IB7RfXU7tg647AQRsM+WP4+suV7CgIPbvs8sDeiPBVcp/5K/XZZZOMsKr538uZKFdh7YGVxsMDlseiEPSISDs2SSwrQVp6METPg4CqpM+J3Bpe8GBk/CFFv7CuzTJq0nyQkBP8vR2vEM9y17x6OOykfvWzlYNSOMslkEQYPicS6G0KJzvCJAXjpQy5NoGRT6jrtReS8EYwZp4/L+HwDkJZBU/9hT3et+HLg5KSe/vXnwJWzkc57p8AIW0xAztj7jbk94uOTTNac17V2kGaSjk696yzvtNUevmJg+azvrIIdTaL1Sa2kwg/Haq1xwEpXgdYI6XADOtk8y4PYjDfUpdzoU0rehGo0cDForYz42UoXi+qvfyxACj5+jtwnHlXlYoQji1j3FVUbnTLIdYo3PO3Dm9+ajFggVuKnlIAgpt7XI/ETPKIU8TcbXdyLseHs0+vzN3I+/6lNKa8= vagrant@vagrant
