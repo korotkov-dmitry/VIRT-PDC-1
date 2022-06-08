@@ -17,15 +17,13 @@
 2. Сделать Declarative Pipeline, который будет выкачивать репозиторий с плейбукой и запускать её
 3. Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`
 4. Перенастроить Job на использование `Jenkinsfile` из репозитория
-5. Создать Scripted Pipeline, наполнить его скриптом из [pipeline](./pipeline)
+5. Создать Scripted Pipeline, наполнить его скриптом из [pipeline](.src/Jenkinsfile)
 6. Заменить credentialsId на свой собственный
 7. Проверить работоспособность, исправить ошибки, исправленный Pipeline вложить в репозитрий в файл `ScriptedJenkinsfile`
 8. Отправить ссылку на репозиторий в ответе
 
-## Необязательная часть
+## Решение
 
-1. Создать скрипт на groovy, который будет собирать все Job, которые завершились хотя бы раз неуспешно. Добавить скрипт в репозиторий с решеним с названием `AllJobFailure.groovy`
-2. Установить customtools plugin
-3. Поднять инстанс с локальным nexus, выложить туда в анонимный доступ  .tar.gz с `ansible`  версии 2.9.x
-4. Создать джобу, которая будет использовать `ansible` из `customtool`
-5. Джоба должна просто исполнять команду `ansible --version`, в ответ прислать лог исполнения джобы 
+[example-playbook](https://github.com/korotkov-dmitry/example-playbook)
+
+[ScriptedJenkinsfile](.src/ScriptedJenkinsfile)
