@@ -27,3 +27,29 @@
 [example-playbook](https://github.com/korotkov-dmitry/example-playbook)
 
 [ScriptedJenkinsfile](./src/ScriptedJenkinsfile)
+
+[docker-compose.yaml](./src/docker-compose.yaml)
+
+<p align="center">
+  <img src="./img/JS.png">
+</p>
+
+<p align="center">
+  <img src="./img/JS_1.png">
+</p>
+
+<p align="center">
+  <img src="./img/JS_2.png">
+</p>
+
+<p align="center">
+  <img src="./img/JS_3.png">
+</p>
+
+<p align="center">
+  <img src="./img/JS_4.png">
+</p>
+
+<p align="center">
+  <img src="./img/JS_5.png">
+</p>
