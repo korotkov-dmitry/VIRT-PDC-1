@@ -41,18 +41,27 @@
 1. Поднять докер-контейнер с образом `python-api:latest` и проверить возврат метода на корректность
 2. Закрыть Issue с комментарием об успешности прохождения, указав желаемый результат и фактически достигнутый
 
-## Итог
+### Решение
 
-После успешного прохождения всех ролей - отправьте ссылку на ваш проект в гитлаб, как решение домашнего задания
+```
+vagrant@vagrant:~$ docker pull registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:latest
+latest: Pulling from korotkov-dmitry/09-ci-06-gitlab/python-api.py
+Digest: sha256:03af7f7f2b8f0560eea0d93ed145ef7caf860df0c2b7d03a4acf7c177bace49d
+Status: Image is up to date for registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:latest
+registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:latest
+vagrant@vagrant:~$ docker run -p 5290:5290 -d 2483db22ba2d
+vagrant@vagrant:~$ curl localhost:5290/get_info
+{"version": 3, "method": "GET", "message": "Already started"}
+vagrant@vagrant:~$ docker stop fee4abe1c324
+fee4abe1c324
 
-## Необязательная часть
-
-Автомазируйте работу тестировщика, пусть у вас будет отдельный конвейер, который автоматически поднимает контейнер и выполняет проверку, например, при помощи curl. На основе вывода - будет приниматься решение об успешности прохождения тестирования
-
----
-
-### Как оформить ДЗ?
-
-Выполненное домашнее задание пришлите ссылкой на .md-файл в вашем репозитории.
-
----
+vagrant@vagrant:~$ docker pull registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:feature
+feature: Pulling from korotkov-dmitry/09-ci-06-gitlab/python-api.py
+Digest: sha256:4bde0f12337b23b0206ca4e16cdcd2dbd039f527e8d60bd8ef6fb368ebf36694
+Status: Image is up to date for registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:feature
+registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:feature
+vagrant@vagrant:~$ docker run -p 5290:5290 -d 3055d8ab6184
+4cccf5b9e8be598ab0133c83acb93ab6b36f19c826045b7db98d7570a718f106
+vagrant@vagrant:~$ curl localhost:5290/get_info
+{"version": 3, "method": "GET", "message": "Running"}
+```
