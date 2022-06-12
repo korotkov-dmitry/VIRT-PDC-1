@@ -43,6 +43,8 @@
 
 ### Решение
 
+[gitlab](https://gitlab.com/korotkov-dmitry/09-ci-06-gitlab)
+
 ```
 vagrant@vagrant:~$ docker pull registry.gitlab.com/korotkov-dmitry/09-ci-06-gitlab/python-api.py:latest
 latest: Pulling from korotkov-dmitry/09-ci-06-gitlab/python-api.py
