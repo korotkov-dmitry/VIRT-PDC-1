@@ -32,9 +32,9 @@ dynamodb.
 
 ## Решение
 
-[main.tf](.src/main.tf)
+[main.tf](./src/main.tf)
 
-[instance.tf](.src/instance/instance.tf)
+[instance.tf](./src/instance/instance.tf)
 
 ```
 vagrant@vagrant:/vagrant/terraform$ terraform workspace list
