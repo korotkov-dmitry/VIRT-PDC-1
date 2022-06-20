@@ -30,10 +30,27 @@ dynamodb.
 * Вывод команды `terraform workspace list`.
 * Вывод команды `terraform plan` для воркспейса `prod`.  
 
----
+## Решение
 
-### Как cдавать задание
+[main.tf](.src/main.tf)
 
-Выполненное домашнее задание пришлите ссылкой на .md-файл в вашем репозитории.
+[instance.tf](.src/instance/instance.tf)
 
----
+```
+vagrant@vagrant:/vagrant/terraform$ terraform workspace list
+  default
+* prod
+  stage
+  
+```
+<p align="center">
+  <img src="./img/TF.png">
+</p>
+
+<p align="center">
+  <img src="./img/TF_1.png">
+</p>
+
+<p align="center">
+  <img src="./img/TF_2.png">
+</p>
