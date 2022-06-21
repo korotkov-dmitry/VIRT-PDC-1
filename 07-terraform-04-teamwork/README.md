@@ -48,17 +48,17 @@
 [Репозиторий для terraform_cloud](https://github.com/korotkov-dmitry/terraform_cloud)
 
 <p align="center">
-  <img src="./img/TС.png">
+  <img src="./img/TC.png">
 </p>
 
 <p align="center">
-  <img src="./img/TС_1.png">
+  <img src="./img/TC_1.png">
 </p>
 
 <p align="center">
-  <img src="./img/TС_2.png">
+  <img src="./img/TC_2.png">
 </p>
 
 <p align="center">
-  <img src="./img/TС_3.png">
+  <img src="./img/TC_3.png">
 </p>
