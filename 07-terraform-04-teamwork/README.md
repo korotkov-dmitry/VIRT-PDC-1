@@ -42,3 +42,23 @@
 Создайте аналогичный инстанс при помощи найденного модуля.   
 
 В качестве результата задания приложите ссылку на созданный блок конфигураций. 
+
+## Решение
+
+[Репозиторий для terraform_cloud](https://github.com/korotkov-dmitry/terraform_cloud)
+
+<p align="center">
+  <img src="./img/TС.png">
+</p>
+
+<p align="center">
+  <img src="./img/TС_1.png">
+</p>
+
+<p align="center">
+  <img src="./img/TС_2.png">
+</p>
+
+<p align="center">
+  <img src="./img/TС_3.png">
+</p>
