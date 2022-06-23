@@ -62,3 +62,7 @@
 <p align="center">
   <img src="./img/TC_3.png">
 </p>
+
+[server.yaml](./src/server.yaml)
+
+[atlantis.yaml](./src/atlantis.yaml)
