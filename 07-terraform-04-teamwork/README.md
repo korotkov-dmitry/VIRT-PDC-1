@@ -66,3 +66,13 @@
 [server.yaml](./src/server.yaml)
 
 [atlantis.yaml](./src/atlantis.yaml)
+
+*для задания 3 не удалось польностью зарегистрировать личный кабинет AWS
+
+<p align="center">
+  <img src="./img/AWS.png">
+</p>
+
+*суть модулеи изучил на основе YC в предыдущем задании [07-terraform-03-basic](https://github.com/korotkov-dmitry/VIRT-PDC-1/tree/main/07-terraform-03-basic) 
+
+
