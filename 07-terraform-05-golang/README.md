@@ -46,3 +46,82 @@
 ## Задача 4. Протестировать код (не обязательно).
 
 Создайте тесты для функций из предыдущего задания. 
+
+## Решение
+
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Print("Enter a number: ")
+	var input float64
+
+	fmt.Scanf("%f", &input)
+
+	output := input * 0.3048
+
+	fmt.Println(output)
+}
+```
+
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+
+	for i := 1; i < 101; i++ {
+
+		var t = i % 3
+		if t == 0 {
+			fmt.Println(i)
+		}
+	}
+}
+```
+
+```
+package main
+
+func Min(x []int) int {
+
+	s := 0
+	for i := range x {
+
+		if s > x[i] {
+			s = x[i]
+		} else {
+			if i == 0 {
+				s = x[i]
+			}
+		}
+	}
+	return s
+}
+```
+```
+package main
+
+import (
+	"fmt"
+	"testing"
+)
+
+func TestMin(t *testing.T) {
+	var s int
+	s = Min([]int{48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17})
+
+	fmt.Println(s)
+
+	if s == 0 {
+		t.Error("Test", s)
+	}
+}
+```
