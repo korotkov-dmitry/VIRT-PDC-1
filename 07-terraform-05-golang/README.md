@@ -49,7 +49,7 @@
 
 ## Решение
 
-
+[Перевод метров в футы](./src/math/math.go)
 ```
 package main
 
@@ -67,6 +67,11 @@ func main() {
 }
 ```
 
+<p align="center">
+  <img src="./img/GO.png">
+</p>
+
+[Деление](./src/division/division.go)
 
 ```
 package main
@@ -87,6 +92,12 @@ func main() {
 }
 ```
 
+<p align="center">
+  <img src="./img/GO_1.png">
+</p>
+
+[Минимальное число](./src/min)
+
 ```
 package main
 
@@ -106,6 +117,7 @@ func Min(x []int) int {
 	return s
 }
 ```
+
 ```
 package main
 
@@ -125,3 +137,7 @@ func TestMin(t *testing.T) {
 	}
 }
 ```
+
+<p align="center">
+  <img src="./img/GO_2.png">
+</p>
