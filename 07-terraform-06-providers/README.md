@@ -27,3 +27,22 @@
 1. Проделайте все шаги создания провайдера.
 2. В виде результата приложение ссылку на исходный код.
 3. Попробуйте скомпилировать провайдер, если получится то приложите снимок экрана с командой и результатом компиляции.   
+
+## Решение
+
+[resource](https://github.com/hashicorp/terraform-provider-aws/blob/main/internal/provider/provider.go#L914)
+
+[data_source](https://github.com/hashicorp/terraform-provider-aws/blob/main/internal/provider/provider.go#L425)
+
+[aws_sqs_queue](https://github.com/hashicorp/terraform-provider-aws/blob/main/internal/service/sqs/queue.go#L82)
+```
+"name": {
+			Type:          schema.TypeString,
+			Optional:      true,
+			Computed:      true,
+			ForceNew:      true,
+			ConflictsWith: []string{"name_prefix"},
+		},
+```
+
+Проверки на валидность не указана.
