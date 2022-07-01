@@ -20,8 +20,10 @@
 12. Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.
 
 ## Решение
-### Запуск локально
+
 [playbook](https://github.com/korotkov-dmitry/ansible-netology)
+
+### Запуск локально
 
 ```
 vagrant@vagrant:/vagrant$ ansible-playbook -i inventory/test.yml site.yml
@@ -122,7 +124,9 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 <p align="center">
   <img src="./img/AN_1.png">
 </p>
+
 ### Запуск через Docker
+
 ```
 vagrant@vagrant:~$ docker pull pycontribs/ubuntu
 Using default tag: latest                                               und: manifest unknown: manifest unknown
@@ -189,7 +193,9 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 <p align="center">
   <img src="./img/AN_2.png">
 </p>
+
 ### Документация
+
 ```
 vagrant@vagrant:/vagrant$ ansible-doc -t connection ssh
 > ANSIBLE.BUILTIN.SSH    (/home/vagrant/.local/lib/python3.8/site-packages/ansible/plugins/connection/ssh.py)
