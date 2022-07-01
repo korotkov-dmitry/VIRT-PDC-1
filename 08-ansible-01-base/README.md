@@ -80,3 +80,45 @@ centos7                    : ok=3    changed=0    unreachable=0    failed=0    s
 localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
+
+<p align="center">
+  <img src="./img/AN.png">
+</p>
+
+```
+vagrant@vagrant:/vagrant$ ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
+Vault password: 
+
+PLAY [Print os facts] ***********************************************************************************************************************************************************
+TASK [Gathering Facts] **********************************************************************************************************************************************************ok: [centos7]
+ok: [ubuntu]
+ok: [localhost]
+
+TASK [Print OS] *****************************************************************************************************************************************************************ok: [centos7] => { 
+    "msg": "Ubuntu"
+}
+ok: [ubuntu] => {  
+    "msg": "Ubuntu"
+}
+ok: [localhost] => {
+    "msg": "Ubuntu" 
+}
+
+TASK [Print fact] ***************************************************************************************************************************************************************ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+
+PLAY RECAP **********************************************************************************************************************************************************************centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+<p align="center">
+  <img src="./img/AN_1.png">
+</p>
