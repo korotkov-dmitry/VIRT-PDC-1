@@ -123,6 +123,76 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
   <img src="./img/AN_1.png">
 </p>
 
+### Запуск через Docker
+
+```
+vagrant@vagrant:~$ docker pull pycontribs/ubuntu
+Using default tag: latest                                               und: manifest unknown: manifest unknown
+latest: Pulling from pycontribs/ubuntu
+423ae2b273f4: Pull complete
+de83a2304fa1: Pull complete
+f9a83bce3af0: Pull complete
+b6b53be908de: Pull complete
+7378af08dad3: Pull complete
+Digest: sha256:dcb590e80d10d1b55bd3d00aadf32de8c413531d5cc4d72d0849d43f45cb7ec4
+Status: Downloaded newer image for pycontribs/ubuntu:latest             5cb7ec4
+docker.io/pycontribs/ubuntu:latest
+vagrant@vagrant:~$ docker pull pycontribs/centos:7
+7: Pulling from pycontribs/centos
+2d473b07cdd5: Pull complete
+43e1b1841fcc: Pull complete
+85bf99ab446d: Pull complete
+Digest: sha256:b3ce994016fd728998f8ebca21eb89bf4e88dbc01ec2603c04cc9c56ca964c69                                                                 a964c69
+Status: Downloaded newer image for pycontribs/centos:7
+docker.io/pycontribs/centos:7
+vagrant@vagrant:~$ docker run --name centos7 -d pycontribs/centos:7 sleep 600000000
+9a26652e2e6acc18c3c335c6978ef7b75be89a142108f011245698bdb1be7bd7
+vagrant@vagrant:~$ docker run --name ubuntu -d pycontribs/ubuntu sleep 600000000
+7f66b50e1d7f5ce986484a58614782892c36b37282b2230e37fdb50406db61f9
+vagrant@vagrant:~$ cd ..//..//../vagrant
+vagrant@vagrant:/vagrant$ ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
+Vault password: 
+
+PLAY [Print os facts] **********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+ok: [ubuntu]
+ok: [centos7]
+
+TASK [Print OS] ****************************************************************
+ok: [centos7] => {
+    "msg": "CentOS"
+}
+ok: [ubuntu] => {
+    "msg": "Ubuntu"
+}
+ok: [localhost] => {
+    "msg": "Ubuntu"
+}
+
+TASK [Print fact] **************************************************************
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+
+PLAY RECAP *********************************************************************
+centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+<p align="center">
+  <img src="./img/AN_3.png">
+</p>
+
+### Документация
 ```
 vagrant@vagrant:/vagrant$ ansible-doc -t connection ssh
 > ANSIBLE.BUILTIN.SSH    (/home/vagrant/.local/lib/python3.8/site-packages/ansible/plugins/connection/ssh.py)
