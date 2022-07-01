@@ -122,3 +122,29 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 <p align="center">
   <img src="./img/AN_1.png">
 </p>
+
+```
+vagrant@vagrant:/vagrant$ ansible-doc -t connection ssh
+> ANSIBLE.BUILTIN.SSH    (/home/vagrant/.local/lib/python3.8/site-packages/ansible/plugins/connection/ssh.py)
+
+        This connection plugin allows Ansible to communicate to the target machines through normal SSH command line. Ansible does not expose
+        a channel to allow communication between the user and the SSH process to accept a password manually to decrypt an SSH key when using
+        this connection plugin (which is the default). The use of `ssh-agent' is highly recommended.
+
+ADDED IN: historical
+
+OPTIONS (= is mandatory):
+
+- control_path
+        This is the location to save SSH's ControlPath sockets, it uses SSH's variable substitution.
+        Since 2.3, if null (default), ansible will generate a unique hash. Use ``%(directory)s`` to indicate where to use the control dir
+        path setting.
+        Before 2.3 it defaulted to ``control_path=%(directory)s/ansible-ssh-%%h-%%p-%%r``.
+        Be aware that this setting is ignored if `-o ControlPath' is set in ssh args.
+        [Default: (null)]
+        set_via:
+          env:
+          - name: ANSIBLE_SSH_CONTROL_PATH
+          ini:
+:
+```
