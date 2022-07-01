@@ -19,13 +19,64 @@
 11. Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь что факты `some_fact` для каждого из хостов определены из верных `group_vars`.
 12. Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.
 
-## Необязательная часть
-
-1. При помощи `ansible-vault` расшифруйте все зашифрованные файлы с переменными.
-2. Зашифруйте отдельное значение `PaSSw0rd` для переменной `some_fact` паролем `netology`. Добавьте полученное значение в `group_vars/all/exmp.yml`.
-3. Запустите `playbook`, убедитесь, что для нужных хостов применился новый `fact`.
-4. Добавьте новую группу хостов `fedora`, самостоятельно придумайте для неё переменную. В качестве образа можно использовать [этот](https://hub.docker.com/r/pycontribs/fedora).
-5. Напишите скрипт на bash: автоматизируйте поднятие необходимых контейнеров, запуск ansible-playbook и остановку контейнеров.
-6. Все изменения должны быть зафиксированы и отправлены в вашей личный репозиторий.
-
 ## Решение
+
+[playbook](https://github.com/korotkov-dmitry/ansible-netology)
+
+```
+vagrant@vagrant:/vagrant$ ansible-playbook -i inventory/test.yml site.yml
+
+PLAY [Print os facts] **********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Print OS] ****************************************************************
+ok: [localhost] => {
+    "msg": "Ubuntu"
+}
+
+TASK [Print fact] **************************************************************
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+vagrant@vagrant:/vagrant$ ansible-playbook -i inventory/prod.yml site.yml
+
+PLAY [Print os facts] **********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [centos7]
+ok: [localhost]
+ok: [ubuntu]
+
+TASK [Print OS] ****************************************************************
+ok: [centos7] => {
+    "msg": "Ubuntu"
+}
+ok: [ubuntu] => {
+    "msg": "Ubuntu"
+}
+ok: [localhost] => {
+    "msg": "Ubuntu"
+}
+
+TASK [Print fact] **************************************************************
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+ok: [localhost] => {
+    "msg": "all default fact"
+}
+
+PLAY RECAP *********************************************************************
+centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
